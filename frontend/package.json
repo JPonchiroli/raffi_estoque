@@ -1,22 +1,28 @@
 {
-  "name": "front-end",
+  "name": "raffi-estoque-frontend",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Raffi Estoque - Next.js Frontend",
   "scripts": {
-    "start": "nodemon ./server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "axios": "^1.9.0",
-    "cors": "^2.8.5",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.0.0",
+    "axios": "^1.6.0",
+    "react-hot-toast": "^2.4.1",
+    "lucide-react": "^0.291.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "typescript": "^5.3.0",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
   }
 }
