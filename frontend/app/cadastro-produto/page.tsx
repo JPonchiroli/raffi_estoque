@@ -9,7 +9,16 @@ import AutocompleteInput from '@/components/AutocompleteInput';
 export default function CadastroProduto() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    nome: string;
+    descricao: string;
+    codigoBarras: string;
+    valorCusto: string;
+    porcentagemLucro: string;
+    valorVenda: string;
+    quantidade: string;
+    fornecedor: { id?: string | number } | null;
+  }>({
     nome: '',
     descricao: '',
     codigoBarras: '',
@@ -17,7 +26,7 @@ export default function CadastroProduto() {
     porcentagemLucro: '',
     valorVenda: '',
     quantidade: '',
-    fornecedor: {},
+    fornecedor: null,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

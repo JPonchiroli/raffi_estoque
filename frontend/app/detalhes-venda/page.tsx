@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -23,11 +23,14 @@ interface VendaDetalhes {
 
 export default function DetalhesVenda() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const codVenda = searchParams.get('codVenda');
-
+  const [codVenda, setCodVenda] = useState<string | null>(null);
   const [venda, setVenda] = useState<VendaDetalhes | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCodVenda(params.get('codVenda'));
+  }, []);
 
   useEffect(() => {
     if (codVenda) {

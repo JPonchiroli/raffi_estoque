@@ -9,10 +9,18 @@ import AutocompleteInput from '@/components/AutocompleteInput';
 export default function CadastroVenda() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    cliente: {},
+  const [formData, setFormData] = useState<{
+    cliente: { id?: string | number } | null;
+    datavenda: string;
+    itens: Array<{
+      produto: { id?: string | number } | null;
+      quantidade: string;
+      preco: string;
+    }>;
+  }>({
+    cliente: null,
     datavenda: new Date().toISOString().split('T')[0],
-    itens: [{ produto: {}, quantidade: '', preco: '' }],
+    itens: [{ produto: null, quantidade: '', preco: '' }],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
