@@ -38,9 +38,15 @@ public class Cliente {
     @JoinColumn(name = "codUsuario", nullable = false)
     private Usuario usuario;
 
+    @Column
+    private String email;
+
+    @Column
+    private String telefone;
+
     public Cliente(){}
 
-    public Cliente(Integer codCliente, String nomeCliente, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento) {
+    public Cliente(Integer codCliente, String nomeCliente, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento, Usuario usuario, String email, String telefone) {
         this.codCliente = codCliente;
         this.nomeCliente = nomeCliente;
         this.cep = cep;
@@ -50,6 +56,9 @@ public class Cliente {
         this.cidade = cidade;
         this.uf = uf;
         this.complemento = complemento;
+        this.usuario = usuario;
+        this.email = email;
+        this.telefone = telefone;
     }
 
     // Getters and Setters
@@ -133,6 +142,22 @@ public class Cliente {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override
