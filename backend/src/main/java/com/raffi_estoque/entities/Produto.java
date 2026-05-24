@@ -28,7 +28,7 @@ public class Produto {
 
     public Produto(){}
 
-    public Produto(Integer codProduto, String codigoBarras, String nomeProduto, String unidadeMedida, Double valorCusto, Integer porcentagemLucro, Double valorVenda, Integer estoqueAtual, Integer estoqueMinimo, Fornecedor fornecedor) {
+    public Produto(Integer codProduto, String codigoBarras, String nomeProduto, String unidadeMedida, Double valorCusto, Integer porcentagemLucro, Double valorVenda, Integer estoqueAtual, Integer estoqueMinimo, Fornecedor fornecedor, Usuario usuario) {
         this.codProduto = codProduto;
         this.codigoBarras = codigoBarras;
         this.nomeProduto = nomeProduto;
@@ -39,6 +39,7 @@ public class Produto {
         this.estoqueAtual = estoqueAtual;
         this.estoqueMinimo = estoqueMinimo;
         this.fornecedor = fornecedor;
+        this.usuario = usuario;
     }
 
     public Integer getCodProduto() {
@@ -119,5 +120,13 @@ public class Produto {
 
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

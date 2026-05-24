@@ -2,10 +2,7 @@ package com.raffi_estoque.services;
 
 import com.raffi_estoque.dto.venda.ItemVendaCreateDto;
 import com.raffi_estoque.dto.venda.VendaCreateDto;
-import com.raffi_estoque.entities.Cliente;
-import com.raffi_estoque.entities.ItemVenda;
-import com.raffi_estoque.entities.Produto;
-import com.raffi_estoque.entities.Venda;
+import com.raffi_estoque.entities.*;
 import com.raffi_estoque.repositories.ClienteRepository;
 import com.raffi_estoque.repositories.ItemVendaRepository;
 import com.raffi_estoque.repositories.ProdutoRepository;
@@ -43,11 +40,14 @@ public class VendaService {
     public Venda salvarVenda(VendaCreateDto dto) {
         Venda venda = new Venda();
 
+        Usuario usuario = new Usuario(dto.getCodUsuario());
+
         Cliente cliente = clienteRepository.findById(dto.getCodCliente())
                 .orElseThrow(() -> new ProdutoNaoEncontradoException("Cliente com código " + dto.getCodCliente() + " não encontrado"));
 
         venda.setCodCliente(cliente.getCodCliente());
         venda.setDataVenda(LocalDateTime.now());
+        venda.setUsuario(usuario);
 
         double totalVenda = 0.0;
         List<ItemVenda> itens = new ArrayList<>();

@@ -38,6 +38,10 @@ public class Usuario {
         this.usuarioSenha = usuarioSenha;
     }
 
+    public Usuario(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
     public Integer getUsuarioId() {
         return usuarioId;
     }

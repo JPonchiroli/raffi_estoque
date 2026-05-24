@@ -32,7 +32,7 @@ public class Fornecedor {
 
     public Fornecedor() {}
 
-    public Fornecedor(Integer codFornecedor, String nomeFornecedor, String cnpj, String email, String telefone, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento, List<Produto> produtos) {
+    public Fornecedor(Integer codFornecedor, String nomeFornecedor, String cnpj, String email, String telefone, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento, List<Produto> produtos, Usuario usuario) {
         this.codFornecedor = codFornecedor;
         this.nomeFornecedor = nomeFornecedor;
         this.cnpj = cnpj;
@@ -46,6 +46,7 @@ public class Fornecedor {
         this.uf = uf;
         this.complemento = complemento;
         this.produtos = produtos;
+        this.usuario = usuario;
     }
 
     public Integer getCodFornecedor() {
@@ -150,6 +151,14 @@ public class Fornecedor {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

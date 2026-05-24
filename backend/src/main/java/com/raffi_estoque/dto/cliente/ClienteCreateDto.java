@@ -15,14 +15,18 @@ public class ClienteCreateDto {
 
     private Integer numeroRua;
 
+    @NotNull
+    private Integer codUsuario;
+
     public ClienteCreateDto() {
     }
 
-    public ClienteCreateDto(String nomeCliente, String cep, String complemento, Integer numeroRua) {
+    public ClienteCreateDto(String nomeCliente, String cep, String complemento, Integer numeroRua, Integer codUsuario) {
         this.nomeCliente = nomeCliente;
         this.cep = cep;
         this.complemento = complemento;
         this.numeroRua = numeroRua;
+        this.codUsuario = codUsuario;
     }
 
     public @NotBlank String getNomeCliente() {
@@ -33,7 +37,7 @@ public class ClienteCreateDto {
         this.nomeCliente = nomeCliente;
     }
 
-    public @NotBlank @Size(min = 8, max = 8) String getCep() {
+    public @Size(min = 8, max = 8) String getCep() {
         return cep;
     }
 
@@ -41,7 +45,7 @@ public class ClienteCreateDto {
         this.cep = cep;
     }
 
-    public @NotBlank @Size(min = 3, max = 50) String getComplemento() {
+    public @Size(min = 3, max = 50) String getComplemento() {
         return complemento;
     }
 
@@ -55,6 +59,14 @@ public class ClienteCreateDto {
 
     public void setNumeroRua(Integer numeroRua) {
         this.numeroRua = numeroRua;
+    }
+
+    public Integer getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Integer codUsuario) {
+        this.codUsuario = codUsuario;
     }
 
     @Override
