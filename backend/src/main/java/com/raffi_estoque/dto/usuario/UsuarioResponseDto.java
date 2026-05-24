@@ -2,15 +2,26 @@ package com.raffi_estoque.dto.usuario;
 
 public class UsuarioResponseDto {
 
+    private Integer usuarioId;
+
     private String usuarioNome;
 
     private String usuarioSenha;
 
     public UsuarioResponseDto(){}
 
-    public UsuarioResponseDto(String usuarioNome, String usuarioSenha) {
+    public UsuarioResponseDto(Integer usuarioId, String usuarioNome, String usuarioSenha) {
+        this.usuarioId = usuarioId;
         this.usuarioNome = usuarioNome;
         this.usuarioSenha = usuarioSenha;
+    }
+
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public String getUsuarioNome() {
