@@ -2,6 +2,8 @@ package com.raffi_estoque.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_usuario")
 public class Usuario {
@@ -15,6 +17,18 @@ public class Usuario {
 
     @Column
     private String usuarioSenha;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Fornecedor> fornecedor;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Cliente> cliente;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Produto> produtos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Venda> venda;
 
     public Usuario(){}
 

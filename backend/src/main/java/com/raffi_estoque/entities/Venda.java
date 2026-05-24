@@ -25,6 +25,10 @@ public class Venda {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH'h'mm dd/MM/yyyy")
     private LocalDateTime dataVenda;
 
+    @ManyToOne
+    @JoinColumn(name = "codUsuario", nullable = false)
+    private Usuario usuario;
+
     public Venda(){}
 
     public Venda(Integer codVenda, Integer codCliente, List<ItemVenda> itens, Double valorTotal, LocalDateTime dataVenda) {

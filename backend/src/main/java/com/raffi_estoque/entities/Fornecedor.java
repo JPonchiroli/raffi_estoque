@@ -26,6 +26,10 @@ public class Fornecedor {
     @OneToMany(mappedBy = "fornecedor")
     private List<Produto> produtos;
 
+    @ManyToOne
+    @JoinColumn(name = "codUsuario", nullable = false)
+    private Usuario usuario;
+
     public Fornecedor() {}
 
     public Fornecedor(Integer codFornecedor, String nomeFornecedor, String cnpj, String email, String telefone, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento, List<Produto> produtos) {

@@ -34,6 +34,10 @@ public class Cliente {
     @Column
     private String complemento;
 
+    @ManyToOne
+    @JoinColumn(name = "codUsuario", nullable = false)
+    private Usuario usuario;
+
     public Cliente(){}
 
     public Cliente(Integer codCliente, String nomeCliente, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento) {

@@ -22,6 +22,10 @@ public class Produto {
     @JoinColumn(name = "codFornecedor", nullable = false)
     private Fornecedor fornecedor;
 
+    @ManyToOne
+    @JoinColumn(name = "codUsuario", nullable = false)
+    private Usuario usuario;
+
     public Produto(){}
 
     public Produto(Integer codProduto, String codigoBarras, String nomeProduto, String unidadeMedida, Double valorCusto, Integer porcentagemLucro, Double valorVenda, Integer estoqueAtual, Integer estoqueMinimo, Fornecedor fornecedor) {
