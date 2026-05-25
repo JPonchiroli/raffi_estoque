@@ -35,6 +35,9 @@ export default function Header() {
             <Link href="/listar-vendas" className="hover:text-gray-300 transition">
               Vendas
             </Link>
+            <Link href="/relatorios" className="hover:text-gray-300 transition">
+              Relatórios
+            </Link>
           </nav>
 
           <button
@@ -61,6 +64,9 @@ export default function Header() {
             </Link>
             <Link href="/listar-vendas" className="block px-4 py-2 hover:bg-secondary rounded-md transition">
               Vendas
+            </Link>
+            <Link href="/relatorios" className="block px-4 py-2 hover:bg-secondary rounded-md transition">
+              Relatórios
             </Link>
           </nav>
         )}

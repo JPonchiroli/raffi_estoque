@@ -57,9 +57,6 @@ public class VendaService {
                     .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto com código " + itemDto.getCodProduto() + " não encontrado"));
 
             int novaQuantidade = produto.getEstoqueAtual() - itemDto.getQuantidade();
-            if (novaQuantidade < produto.getEstoqueMinimo()) {
-                throw new EstoqueInsuficienteException("Estoque do produto " + produto.getNomeProduto() + " atingirá o mínimo permitido.");
-            }
 
             produto.setEstoqueAtual(novaQuantidade);
             produtoService.update(produto.getCodProduto(), produto);
