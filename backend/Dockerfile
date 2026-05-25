@@ -8,4 +8,4 @@ RUN chmod +x mvnw
 
 RUN ./mvnw clean package -DskipTests
 
-CMD ["java", "-jar", "target/seu-backend.jar"]
+CMD ["java", "-jar", "target/backend-0.0.1-SNAPSHOT.jar"]
