@@ -14,7 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")  // para todos os endpoints
-                        .allowedOrigins("http://localhost:3000")  // front-end local
+                        .allowedOrigins(
+                                "http://localhost:3000",
+                                "https://raffi-estoque.vercel.app"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowCredentials(true);
             }
