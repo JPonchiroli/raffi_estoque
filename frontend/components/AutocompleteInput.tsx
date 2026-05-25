@@ -12,6 +12,7 @@ interface AutocompleteOption {
 interface AutocompleteInputProps {
   label?: string;
   placeholder?: string;
+  value?: string;
   onSelect: (option: AutocompleteOption) => void;
   fetchOptions: (query: string) => Promise<AutocompleteOption[]>;
   error?: string;
@@ -20,16 +21,21 @@ interface AutocompleteInputProps {
 export default function AutocompleteInput({
   label,
   placeholder = 'Digite para buscar...',
+  value: externalValue = '',
   onSelect,
   fetchOptions,
   error,
 }: AutocompleteInputProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(externalValue);
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setValue(externalValue);
+  }, [externalValue]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -38,7 +44,9 @@ export default function AutocompleteInput({
         try {
           const results = await fetchOptions(value);
           setOptions(results);
-          setIsOpen(true);
+          if (document.activeElement === inputRef.current) {
+            setIsOpen(true);
+          }
         } catch (err) {
           setOptions([]);
         } finally {

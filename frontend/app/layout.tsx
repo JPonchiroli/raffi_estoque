@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -35,7 +36,9 @@ export default function RootLayout({
         </header>
 
         <main className="flex-1 w-full">
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </main>
 
         <footer className="bg-[#ecf0f1] text-center text-sm text-gray-700 py-5 mt-auto">

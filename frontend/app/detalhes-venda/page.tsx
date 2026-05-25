@@ -7,41 +7,61 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 interface ItemVenda {
-  id: string;
-  produto: { nome: string };
+  codProduto: string;
+  nomeProduto: string;
   quantidade: number;
-  preco: number;
+  valorUnitario: number;
 }
 
 interface VendaDetalhes {
-  id: string;
-  cliente: { nome: string; email: string; telefone: string };
+  codVenda: string;
+  codCliente: number;
   dataVenda: string;
   valorTotal: number;
   itens: ItemVenda[];
+}
+
+interface Cliente {
+  nomeCliente: string;
+  email: string;
+  telefone: string;
 }
 
 export default function DetalhesVenda() {
   const router = useRouter();
   const [codVenda, setCodVenda] = useState<string | null>(null);
   const [venda, setVenda] = useState<VendaDetalhes | null>(null);
+  const [cliente, setCliente] = useState<Cliente | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const params = new URLSearchParams(window.location.search);
+
     setCodVenda(params.get('codVenda'));
+
   }, []);
 
   useEffect(() => {
+
     if (codVenda) {
       fetchVenda();
     }
+
   }, [codVenda]);
+
+  useEffect(() => {
+
+    if (venda?.codCliente) {
+      fetchCliente();
+    }
+
+  }, [venda]);
 
   const fetchVenda = async () => {
     try {
       const response = await fetch(
-        `/api/vendas?id=${codVenda}&action=items`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/vendas/get-venda/${codVenda}`
       );
       const data = await response.json();
       setVenda(data);
@@ -49,6 +69,28 @@ export default function DetalhesVenda() {
       toast.error('Erro ao carregar detalhes da venda');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCliente = async () => {
+
+    if (!venda?.codCliente) {
+      return;
+    }
+
+    try {
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-cliente/${venda.codCliente}`
+      );
+
+      const data = await response.json();
+
+      setCliente(data);
+
+    } catch (error) {
+
+      toast.error('Erro ao carregar detalhes do cliente');
     }
   };
 
@@ -79,7 +121,7 @@ export default function DetalhesVenda() {
         Voltar para Vendas
       </Link>
 
-      <h1 className="text-3xl font-bold mb-6 text-primary">Detalhes da Venda #{venda.id}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">Detalhes da Venda #{venda.codVenda}</h1>
 
       {/* Informações da Venda */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
@@ -87,17 +129,17 @@ export default function DetalhesVenda() {
           <div>
             <p className="text-sm text-gray-600">Data da Venda</p>
             <p className="text-lg font-semibold">
-              {new Date(venda.dataVenda).toLocaleDateString('pt-BR')}
+              {venda.dataVenda}
             </p>
           </div>
           <div>
             <p className="text-sm text-gray-600">Cliente</p>
-            <p className="text-lg font-semibold">{venda.cliente?.nome}</p>
-            <p className="text-sm text-gray-600">{venda.cliente?.email}</p>
+            <p className="text-lg font-semibold">{cliente.nomeCliente}</p>
+            <p className="text-sm text-gray-600">{cliente.email}</p>
           </div>
           <div>
             <p className="text-sm text-gray-600">Telefone</p>
-            <p className="text-lg font-semibold">{venda.cliente?.telefone}</p>
+            <p className="text-lg font-semibold">{cliente.telefone}</p>
           </div>
         </div>
       </div>
@@ -120,12 +162,12 @@ export default function DetalhesVenda() {
             <tbody>
               {venda.itens && venda.itens.length > 0 ? (
                 venda.itens.map((item: ItemVenda) => (
-                  <tr key={item.id} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm">{item.produto?.nome}</td>
-                    <td className="px-4 py-3 text-sm text-center">{item.quantidade}</td>
-                    <td className="px-4 py-3 text-sm">R$ {item.preco.toFixed(2)}</td>
+                  <tr key={item.codProduto} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-3 text-sm">{item.nomeProduto}</td>
+                    <td className="px-4 py-3 text-sm">{item.quantidade}</td>
+                    <td className="px-4 py-3 text-sm">R$ {item.valorUnitario.toFixed(2)}</td>
                     <td className="px-4 py-3 text-sm font-semibold">
-                      R$ {(item.quantidade * item.preco).toFixed(2)}
+                      R$ {(item.quantidade * item.valorUnitario).toFixed(2)}
                     </td>
                   </tr>
                 ))

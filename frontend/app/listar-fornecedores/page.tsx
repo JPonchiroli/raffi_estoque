@@ -7,11 +7,11 @@ import DataTable from '@/components/DataTable';
 import ActionButtons from '@/components/ActionButtons';
 
 interface Fornecedor {
-  id: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cnpj: string;
+  codFornecedor: number;
+  nomeFornecedor: string;
+  email: string | null;
+  telefone: string | null;
+  cnpj: string | null;
 }
 
 export default function ListarFornecedores() {
@@ -25,7 +25,7 @@ export default function ListarFornecedores() {
 
   const fetchFornecedores = async () => {
     try {
-      const response = await fetch('/api/fornecedores?action=list');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fornecedores/get-all-fornecedores`);
       const data = await response.json();
       setFornecedores(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -37,13 +37,13 @@ export default function ListarFornecedores() {
   };
 
   const handleEdit = (fornecedor: Fornecedor) => {
-    router.push(`/cadastro-fornecedor?id=${fornecedor.id}`);
+    router.push(`/cadastro-fornecedor?id=${fornecedor.codFornecedor}`);
   };
 
   const handleDelete = async (fornecedor: Fornecedor) => {
-    if (confirm(`Deseja deletar o fornecedor ${fornecedor.nome}?`)) {
+    if (confirm(`Deseja deletar o fornecedor ${fornecedor.nomeFornecedor}?`)) {
       try {
-        const response = await fetch(`/api/fornecedores?id=${fornecedor.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fornecedores/deletar-fornecedor/${fornecedor.codFornecedor}`, {
           method: 'DELETE',
         });
 
@@ -64,7 +64,7 @@ export default function ListarFornecedores() {
   }
 
   const columns = [
-    { key: 'nome' as const, label: 'Razão Social' },
+    { key: 'nomeFornecedor' as const, label: 'Razão Social' },
     { key: 'cnpj' as const, label: 'CNPJ' },
     { key: 'email' as const, label: 'Email' },
     { key: 'telefone' as const, label: 'Telefone' },
@@ -86,7 +86,7 @@ export default function ListarFornecedores() {
         data={fornecedores}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        searchKeys={['nome', 'email', 'cnpj']}
+        searchKeys={['nomeFornecedor', 'email', 'cnpj', 'telefone']}
       />
     </div>
   );

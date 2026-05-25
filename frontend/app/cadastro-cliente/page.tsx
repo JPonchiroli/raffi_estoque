@@ -1,25 +1,72 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import FormInput from '@/components/FormInput';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CadastroCliente() {
+  const { user } = useAuth();
+  const searchParams = useSearchParams();
+  const clienteId = searchParams.get('id');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    nome: '',
+    nomeCliente: '',
     email: '',
     telefone: '',
-    endereco: '',
-    numero: '',
+    numeroRua: '',
+    rua: '',
     complemento: '',
     bairro: '',
     cep: '',
     cidade: '',
-    estado: '',
+    uf: '',
   });
+
+  useEffect(() => {
+
+    if (!clienteId) {
+      return;
+    }
+
+    const fetchCliente = async () => {
+
+      try {
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-cliente/${clienteId}`
+        );
+
+        if (!response.ok) {
+          toast.error('Erro ao buscar cliente');
+          return;
+        }
+
+        const data = await response.json();
+
+        setFormData({
+          nomeCliente: data.nomeCliente || '',
+          email: data.email || '',
+          telefone: data.telefone || '',
+          numeroRua: data.numeroRua || '',
+          rua: data.rua || '',
+          complemento: data.complemento || '',
+          bairro: data.bairro || '',
+          cep: data.cep || '',
+          cidade: data.cidade || '',
+          uf: data.uf || '',
+        });
+
+      } catch (error) {
+        toast.error('Erro ao carregar cliente');
+      }
+    };
+
+    fetchCliente();
+
+  }, [clienteId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,15 +80,17 @@ export default function CadastroCliente() {
     const cep = e.target.value.replace(/\D/g, '');
     if (cep.length === 8) {
       try {
-        const response = await fetch(`/api/utils?cep=${cep}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-address/${cep}`);
         const data = await response.json();
-        if (data.endereco) {
+        if (data) {
           setFormData((prev) => ({
             ...prev,
-            endereco: data.endereco.logradouro || '',
-            bairro: data.endereco.bairro || '',
-            cidade: data.endereco.localidade || '',
-            estado: data.endereco.uf || '',
+            rua: data.logradouro || '',
+            bairro: data.bairro || '',
+            cidade: data.localidade || '',
+            uf: data.uf || '',
+            numeroRua: '',
+            complemento: '',
           }));
           toast.success('Endereço encontrado!');
         }
@@ -52,42 +101,79 @@ export default function CadastroCliente() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
+
     setLoading(true);
 
     try {
-      const response = await fetch('/api/clientes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+
+      const isEdit = Boolean(clienteId);
+
+      const response = await fetch(
+
+        isEdit
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/update-cliente/${clienteId}`
+          : `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/create-cliente`,
+
+        {
+          method: isEdit ? 'PUT' : 'POST',
+
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+         body: JSON.stringify({
+          ...formData,
+          codUsuario: user?.usuarioId,
+        }),
+        }
+      );
 
       if (response.ok) {
-        toast.success('Cliente cadastrado com sucesso!');
+
+        toast.success(
+          isEdit
+            ? 'Cliente atualizado com sucesso!'
+            : 'Cliente cadastrado com sucesso!'
+        );
+
         router.push('/listar-clientes');
+
       } else {
-        toast.error('Erro ao cadastrar cliente');
+
+        toast.error(
+          isEdit
+            ? 'Erro ao atualizar cliente'
+            : 'Erro ao cadastrar cliente'
+        );
       }
+
     } catch (error) {
+
       toast.error('Erro na conexão');
+
     } finally {
+
       setLoading(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-primary">Cadastrar Cliente</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">
+        {clienteId ? 'Editar Cliente' : 'Cadastrar Cliente'}
+      </h1>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2">
             <FormInput
               label="Nome Completo *"
-              name="nome"
+              name="nomeCliente"
               type="text"
               placeholder="Digite o nome completo"
-              value={formData.nome}
+              value={formData.nomeCliente}
               onChange={handleInputChange}
               required
             />
@@ -123,19 +209,19 @@ export default function CadastroCliente() {
 
           <FormInput
             label="Endereço"
-            name="endereco"
+            name="rua"
             type="text"
             placeholder="Digite o endereço"
-            value={formData.endereco}
+            value={formData.rua}
             onChange={handleInputChange}
           />
 
           <FormInput
             label="Número"
-            name="numero"
+            name="numeroRua"
             type="text"
             placeholder="Número"
-            value={formData.numero}
+            value={formData.numeroRua}
             onChange={handleInputChange}
           />
 
@@ -168,10 +254,10 @@ export default function CadastroCliente() {
 
           <FormInput
             label="Estado"
-            name="estado"
+            name="uf"
             type="text"
             placeholder="UF"
-            value={formData.estado}
+            value={formData.uf}
             onChange={handleInputChange}
             maxLength={2}
           />
@@ -183,7 +269,12 @@ export default function CadastroCliente() {
             disabled={loading}
             className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-primary disabled:opacity-50 transition"
           >
-            {loading ? 'Salvando...' : 'Salvar Cliente'}
+            {loading
+              ? 'Salvando...'
+              : clienteId
+                ? 'Atualizar Cliente'
+                : 'Salvar Cliente'
+            }
           </button>
           <button
             type="button"

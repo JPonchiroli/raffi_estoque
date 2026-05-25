@@ -7,8 +7,8 @@ import DataTable from '@/components/DataTable';
 import ActionButtons from '@/components/ActionButtons';
 
 interface Cliente {
-  id: string;
-  nome: string;
+  codCliente: string;
+  nomeCliente: string;
   email: string;
   telefone: string;
   cidade: string;
@@ -25,7 +25,7 @@ export default function ListarClientes() {
 
   const fetchClientes = async () => {
     try {
-      const response = await fetch('/api/clientes?action=list');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-all-clientes`);
       const data = await response.json();
       setClientes(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -37,13 +37,13 @@ export default function ListarClientes() {
   };
 
   const handleEdit = (cliente: Cliente) => {
-    router.push(`/cadastro-cliente?id=${cliente.id}`);
+    router.push(`/cadastro-cliente?id=${cliente.codCliente}`);
   };
 
   const handleDelete = async (cliente: Cliente) => {
-    if (confirm(`Deseja deletar o cliente ${cliente.nome}?`)) {
+    if (confirm(`Deseja deletar o cliente ${cliente.nomeCliente}?`)) {
       try {
-        const response = await fetch(`/api/clientes?id=${cliente.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes/deletar-cliente/${cliente.codCliente}`, {
           method: 'DELETE',
         });
 
@@ -63,11 +63,11 @@ export default function ListarClientes() {
     return <div className="text-center py-8">Carregando...</div>;
   }
 
-  const columns = [
-    { key: 'nome' as const, label: 'Nome' },
-    { key: 'email' as const, label: 'Email' },
-    { key: 'telefone' as const, label: 'Telefone' },
-    { key: 'cidade' as const, label: 'Cidade' },
+  const columns: { key: keyof Cliente; label: string }[] = [
+    { key: 'nomeCliente', label: 'Nome' },
+    { key: 'email', label: 'Email' },
+    { key: 'telefone', label: 'Telefone' },
+    { key: 'cidade', label: 'Cidade' },
   ];
 
   return (
@@ -86,7 +86,7 @@ export default function ListarClientes() {
         data={clientes}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        searchKeys={['nome', 'email', 'telefone']}
+        searchKeys={['nomeCliente', 'email', 'telefone']}
       />
     </div>
   );

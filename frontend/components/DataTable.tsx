@@ -9,7 +9,7 @@ interface Column<T> {
   render?: (value: any, item: T) => React.ReactNode;
 }
 
-interface DataTableProps<T extends { id?: string | number }> {
+interface DataTableProps<T extends object> {
   columns: Column<T>[];
   data: T[];
   onEdit?: (item: T) => void;
@@ -18,7 +18,7 @@ interface DataTableProps<T extends { id?: string | number }> {
   searchKeys?: (keyof T)[];
 }
 
-export default function DataTable<T extends { id?: string | number }>({
+export default function DataTable<T extends object>({
   columns,
   data,
   onEdit,
@@ -100,7 +100,7 @@ export default function DataTable<T extends { id?: string | number }>({
             {paginatedData.length > 0 ? (
               paginatedData.map((item, idx) => (
                 <tr
-                  key={item.id || idx}
+                  key={((item as any).id as string | number) || idx}
                   className="border-b hover:bg-gray-50 transition"
                 >
                   {columns.map((column) => (
@@ -108,9 +108,38 @@ export default function DataTable<T extends { id?: string | number }>({
                       key={String(column.key)}
                       className="px-4 py-3 text-sm text-gray-900"
                     >
-                      {column.render
-                        ? column.render(item[column.key], item)
-                        : String(item[column.key])}
+                      {(() => {
+
+                        const value = column.render
+                          ? column.render(item[column.key], item)
+                          : item[column.key];
+
+                        if (
+                          value === null ||
+                          value === undefined
+                        ) {
+                          return '-';
+                        }
+
+                        if (
+                          typeof value === 'string' &&
+                          value.trim() === ''
+                        ) {
+                          return '-';
+                        }
+
+                        if (
+                          typeof value === 'string' ||
+                          typeof value === 'number' ||
+                          typeof value === 'boolean' ||
+                          typeof value === 'bigint'
+                        ) {
+                          return String(value);
+                        }
+
+                        return value as React.ReactNode;
+
+                      })()}
                     </td>
                   ))}
                   {(onEdit || onDelete) && (

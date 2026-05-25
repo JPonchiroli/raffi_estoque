@@ -1,94 +1,220 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import FormInput from '@/components/FormInput';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CadastroFornecedor() {
+
+  const { user } = useAuth();
+
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const fornecedorId = searchParams.get('id');
+
   const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
-    nome: '',
+    nomeFornecedor: '',
     email: '',
     telefone: '',
     cnpj: '',
-    endereco: '',
-    numero: '',
+    rua: '',
+    numeroRua: '',
     complemento: '',
     bairro: '',
     cep: '',
     cidade: '',
-    estado: '',
+    uf: '',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+
+    if (!fornecedorId) {
+      return;
+    }
+
+    const fetchFornecedor = async () => {
+
+      try {
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/fornecedores/get-fornecedor/${fornecedorId}`
+        );
+
+        if (!response.ok) {
+
+          toast.error('Erro ao buscar fornecedor');
+
+          return;
+        }
+
+        const data = await response.json();
+
+        setFormData({
+          nomeFornecedor: data.nomeFornecedor || '',
+          email: data.email || '',
+          telefone: data.telefone || '',
+          cnpj: data.cnpj || '',
+          rua: data.rua || '',
+          numeroRua: data.numeroRua || '',
+          complemento: data.complemento || '',
+          bairro: data.bairro || '',
+          cep: data.cep || '',
+          cidade: data.cidade || '',
+          uf: data.uf || '',
+        });
+
+      } catch (error) {
+
+        toast.error('Erro ao carregar fornecedor');
+      }
+    };
+
+    fetchFornecedor();
+
+  }, [fornecedorId]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleCepBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleCepBlur = async (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+
     const cep = e.target.value.replace(/\D/g, '');
+
     if (cep.length === 8) {
+
       try {
-        const response = await fetch(`/api/utils?cep=${cep}`);
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-address/${cep}`
+        );
+
         const data = await response.json();
-        if (data.endereco) {
+
+        if (data) {
+
           setFormData((prev) => ({
             ...prev,
-            endereco: data.endereco.logradouro || '',
-            bairro: data.endereco.bairro || '',
-            cidade: data.endereco.localidade || '',
-            estado: data.endereco.uf || '',
+            rua: data.logradouro || '',
+            bairro: data.bairro || '',
+            cidade: data.localidade || '',
+            uf: data.uf || '',
+            numeroRua: '',
+            complemento: '',
           }));
+
           toast.success('Endereço encontrado!');
         }
+
       } catch (error) {
+
         toast.error('Erro ao buscar endereço');
       }
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+
     e.preventDefault();
+
     setLoading(true);
 
     try {
-      const response = await fetch('/api/fornecedores', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+
+      const isEdit = Boolean(fornecedorId);
+
+      const response = await fetch(
+
+        isEdit
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/fornecedores/update-fornecedor/${fornecedorId}`
+          : `${process.env.NEXT_PUBLIC_API_URL}/api/fornecedores/create-fornecedor`,
+
+        {
+          method: isEdit ? 'PUT' : 'POST',
+
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+          body: JSON.stringify({
+            ...formData,
+            codUsuario: user?.usuarioId,
+          }),
+        }
+      );
 
       if (response.ok) {
-        toast.success('Fornecedor cadastrado com sucesso!');
+
+        toast.success(
+          isEdit
+            ? 'Fornecedor atualizado com sucesso!'
+            : 'Fornecedor cadastrado com sucesso!'
+        );
+
         router.push('/listar-fornecedores');
+
       } else {
-        toast.error('Erro ao cadastrar fornecedor');
+
+        toast.error(
+          isEdit
+            ? 'Erro ao atualizar fornecedor'
+            : 'Erro ao cadastrar fornecedor'
+        );
       }
+
     } catch (error) {
+
       toast.error('Erro na conexão');
+
     } finally {
+
       setLoading(false);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-primary">Cadastrar Fornecedor</h1>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6">
+      <h1 className="text-3xl font-bold mb-6 text-primary">
+        {
+          fornecedorId
+            ? 'Editar Fornecedor'
+            : 'Cadastrar Fornecedor'
+        }
+      </h1>
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-lg shadow p-6"
+      >
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
           <div className="md:col-span-2">
             <FormInput
               label="Razão Social *"
-              name="nome"
+              name="nomeFornecedor"
               type="text"
               placeholder="Digite a razão social"
-              value={formData.nome}
+              value={formData.nomeFornecedor}
               onChange={handleInputChange}
               required
             />
@@ -133,19 +259,19 @@ export default function CadastroFornecedor() {
 
           <FormInput
             label="Endereço"
-            name="endereco"
+            name="rua"
             type="text"
             placeholder="Digite o endereço"
-            value={formData.endereco}
+            value={formData.rua}
             onChange={handleInputChange}
           />
 
           <FormInput
             label="Número"
-            name="numero"
+            name="numeroRua"
             type="text"
             placeholder="Número"
-            value={formData.numero}
+            value={formData.numeroRua}
             onChange={handleInputChange}
           />
 
@@ -178,23 +304,32 @@ export default function CadastroFornecedor() {
 
           <FormInput
             label="Estado"
-            name="estado"
+            name="uf"
             type="text"
             placeholder="UF"
-            value={formData.estado}
+            value={formData.uf}
             onChange={handleInputChange}
             maxLength={2}
           />
+
         </div>
 
         <div className="flex gap-3 mt-6">
+
           <button
             type="submit"
             disabled={loading}
             className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-primary disabled:opacity-50 transition"
           >
-            {loading ? 'Salvando...' : 'Salvar Fornecedor'}
+            {
+              loading
+                ? 'Salvando...'
+                : fornecedorId
+                  ? 'Atualizar Fornecedor'
+                  : 'Salvar Fornecedor'
+            }
           </button>
+
           <button
             type="button"
             onClick={() => router.push('/listar-fornecedores')}
@@ -202,7 +337,9 @@ export default function CadastroFornecedor() {
           >
             Cancelar
           </button>
+
         </div>
+
       </form>
     </div>
   );

@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Users, Package, Truck, ShoppingCart, Plus } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 const quickActions = [
   {
@@ -43,6 +46,19 @@ const quickActions = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user === null) {
+      router.replace('/login');
+    }
+  }, [user, router]);
+
+  if (user === undefined || user === null) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-light px-4 py-8 md:px-8">
       <section className="max-w-6xl mx-auto">
