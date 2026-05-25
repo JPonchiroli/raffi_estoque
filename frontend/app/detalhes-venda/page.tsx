@@ -50,47 +50,36 @@ export default function DetalhesVenda() {
 
   }, [codVenda]);
 
-  useEffect(() => {
-
-    if (venda?.codCliente) {
-      fetchCliente();
-    }
-
-  }, [venda]);
-
   const fetchVenda = async () => {
+
     try {
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/vendas/get-venda/${codVenda}`
       );
+
       const data = await response.json();
+
       setVenda(data);
+
+      if (data?.codCliente) {
+
+        const clienteResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-cliente/${data.codCliente}`
+        );
+
+        const clienteData = await clienteResponse.json();
+
+        setCliente(clienteData);
+      }
+
     } catch (error) {
+
       toast.error('Erro ao carregar detalhes da venda');
+
     } finally {
+
       setLoading(false);
-    }
-  };
-
-  const fetchCliente = async () => {
-
-    if (!venda?.codCliente) {
-      return;
-    }
-
-    try {
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/clientes/get-cliente/${venda.codCliente}`
-      );
-
-      const data = await response.json();
-
-      setCliente(data);
-
-    } catch (error) {
-
-      toast.error('Erro ao carregar detalhes do cliente');
     }
   };
 
