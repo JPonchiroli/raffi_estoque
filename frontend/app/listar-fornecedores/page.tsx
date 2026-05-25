@@ -77,8 +77,6 @@ export default function ListarFornecedores() {
       <ActionButtons
         createLink="/cadastro-fornecedor"
         createLabel="Novo Fornecedor"
-        listLink="/listar-fornecedores"
-        listLabel="Atualizar"
       />
 
       <DataTable

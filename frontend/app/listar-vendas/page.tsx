@@ -164,8 +164,6 @@ export default function ListarVendas() {
       <ActionButtons
         createLink="/cadastro-venda"
         createLabel="Nova Venda"
-        listLink="/listar-vendas"
-        listLabel="Atualizar"
       />
 
       <div className="bg-white rounded-lg shadow">

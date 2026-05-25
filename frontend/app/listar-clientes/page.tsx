@@ -77,8 +77,6 @@ export default function ListarClientes() {
       <ActionButtons
         createLink="/cadastro-cliente"
         createLabel="Novo Cliente"
-        listLink="/listar-clientes"
-        listLabel="Atualizar"
       />
 
       <DataTable

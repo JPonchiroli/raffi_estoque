@@ -160,8 +160,6 @@ export default function ListarProdutos() {
       <ActionButtons
         createLink="/cadastro-produto"
         createLabel="Novo Produto"
-        listLink="/listar-produtos"
-        listLabel="Atualizar"
       />
 
       <DataTable
