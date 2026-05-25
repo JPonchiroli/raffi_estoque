@@ -34,11 +34,16 @@ public class ProdutoCreateDto {
     @NotBlank
     private Integer codFornecedor;
 
+    @NotBlank
+    private Integer codUsuario;
+
 
     public ProdutoCreateDto() {
     }
 
-    public ProdutoCreateDto(String nomeProduto, String codigoBarras, String unidadeMedida, Double valorCusto, Integer porcentagemLucro, Double valorVenda, Integer estoqueAtual, Integer estoqueMinimo, Integer codFornecedor) {
+    public ProdutoCreateDto
+            (String nomeProduto, String codigoBarras, String unidadeMedida, Double valorCusto, Integer porcentagemLucro,
+             Double valorVenda, Integer estoqueAtual, Integer estoqueMinimo, Integer codFornecedor, Integer codUsuario) {
         this.nomeProduto = nomeProduto;
         this.codigoBarras = codigoBarras;
         this.unidadeMedida = unidadeMedida;
@@ -48,6 +53,7 @@ public class ProdutoCreateDto {
         this.estoqueAtual = estoqueAtual;
         this.estoqueMinimo = estoqueMinimo;
         this.codFornecedor = codFornecedor;
+        this.codUsuario = codUsuario;
     }
 
     public String getNomeProduto() {
@@ -121,6 +127,10 @@ public class ProdutoCreateDto {
     public void setCodFornecedor(Integer codFornecedor) {
         this.codFornecedor = codFornecedor;
     }
+
+    public Integer getCodUsuario() { return codUsuario; }
+
+    public void setCodUsuario(Integer codUsuario) { this.codUsuario = codUsuario; }
 
     @Override
     public String toString() {

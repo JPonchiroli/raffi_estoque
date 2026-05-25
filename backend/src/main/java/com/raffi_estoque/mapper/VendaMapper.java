@@ -7,6 +7,7 @@ import com.raffi_estoque.dto.venda.ItemVendaResponseDto;
 import com.raffi_estoque.dto.venda.VendaCreateDto;
 import com.raffi_estoque.dto.venda.VendaResponseDto;
 import com.raffi_estoque.entities.ItemVenda;
+import com.raffi_estoque.entities.Usuario;
 import com.raffi_estoque.entities.Venda;
 
 import org.springframework.stereotype.Component;
@@ -33,7 +34,20 @@ public interface VendaMapper {
     @Mapping(target = "subTotal", source = ".", qualifiedByName = "calculateSubTotal")
     ItemVendaResponseDto toItemVendaResponseDto(ItemVenda item);
 
+    @Mapping(target = "usuario", source = "codUsuario")
     Venda toVenda(VendaCreateDto vendaCreateDto);
+
+    default Usuario map(Integer codUsuario) {
+
+        if (codUsuario == null) {
+            return null;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsuarioId(codUsuario);
+
+        return usuario;
+    }
 
     List<VendaResponseDto> toListResponseDto(List<Venda> venda);
 

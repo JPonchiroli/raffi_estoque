@@ -73,6 +73,8 @@ public class ClienteService {
 
         clienteUpd.setNumeroRua(cliente.getNumeroRua());
         clienteUpd.setComplemento(cliente.getComplemento());
+        clienteUpd.setEmail(cliente.getEmail());
+        clienteUpd.setTelefone(cliente.getTelefone());
         return clienteRepository.save(clienteUpd);
     }
 

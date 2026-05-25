@@ -70,7 +70,7 @@ public class ProdutoController {
     public List<ProdutoNomeDto> getProdutoPorNome(@PathVariable String nomeProduto) {
         List<Produto> produtos = produtoService.findFornecedorPorNome(nomeProduto);
         return produtos.stream()
-                .map(f -> new ProdutoNomeDto(f.getCodProduto(), f.getNomeProduto()))
+                .map(f -> new ProdutoNomeDto(f.getCodProduto(), f.getNomeProduto(), f.getValorVenda()))
                 .collect(Collectors.toList());
     }
 

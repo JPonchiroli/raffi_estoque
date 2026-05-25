@@ -90,3 +90,12 @@ Aplicação web para gerenciamento de estoque, com interface amigável, backend 
    ```
 
 
+
+   ### A FAZER 
+
+
+   Corrijir a aplicação correta do Tailwind
+    
+
+
+

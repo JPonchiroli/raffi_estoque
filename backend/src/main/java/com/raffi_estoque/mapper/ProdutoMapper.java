@@ -5,6 +5,7 @@ import com.raffi_estoque.dto.produto.ProdutoResponseDto;
 import com.raffi_estoque.dto.produto.ProdutoUpdateDto;
 import com.raffi_estoque.entities.Produto;
 
+import com.raffi_estoque.entities.Usuario;
 import org.springframework.stereotype.Component;
 
 import org.mapstruct.InheritInverseConfiguration;
@@ -24,7 +25,20 @@ public interface ProdutoMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "fornecedor", ignore = true)
+    @Mapping(target = "usuario", source = "codUsuario")
     Produto toProduto(ProdutoCreateDto produtoCreateDto);
+
+    default Usuario map(Integer codUsuario) {
+
+        if (codUsuario == null) {
+            return null;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsuarioId(codUsuario);
+
+        return usuario;
+    }
 
     @Mapping(source = "fornecedor.codFornecedor", target = "codFornecedor")
     List<ProdutoResponseDto> toListResponseDto(List<Produto> produto);

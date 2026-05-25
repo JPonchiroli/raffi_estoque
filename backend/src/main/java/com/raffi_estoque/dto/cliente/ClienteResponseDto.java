@@ -11,10 +11,12 @@ public class ClienteResponseDto {
     private String cidade;
     private String uf;
     private String complemento;
+    private String email;
+    private String telefone;
 
     public ClienteResponseDto() {}
 
-    public ClienteResponseDto(Integer codCliente, String nomeCliente, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento) {
+    public ClienteResponseDto(Integer codCliente, String nomeCliente, String cep, String rua, Integer numeroRua, String bairro, String cidade, String uf, String complemento, String email, String telefone) {
         this.codCliente = codCliente;
         this.nomeCliente = nomeCliente;
         this.cep = cep;
@@ -24,6 +26,8 @@ public class ClienteResponseDto {
         this.cidade = cidade;
         this.uf = uf;
         this.complemento = complemento;
+        this.email = email;
+        this.telefone = telefone;
     }
 
     public Integer getCodCliente() {
@@ -96,6 +100,22 @@ public class ClienteResponseDto {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override

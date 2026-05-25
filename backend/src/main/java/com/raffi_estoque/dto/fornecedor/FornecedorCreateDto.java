@@ -17,9 +17,12 @@ public class FornecedorCreateDto {
     private String complemento;
     private Integer numeroRua;
 
+    @NotBlank
+    private Integer codUsuario;
+
     public FornecedorCreateDto(){}
 
-    public FornecedorCreateDto(String nomeFornecedor, String cnpj, String email, String telefone, String cep, String complemento, Integer numeroRua) {
+    public FornecedorCreateDto(String nomeFornecedor, String cnpj, String email, String telefone, String cep, String complemento, Integer numeroRua, Integer codUsuario) {
         this.nomeFornecedor = nomeFornecedor;
         this.cnpj = cnpj;
         this.email = email;
@@ -27,6 +30,7 @@ public class FornecedorCreateDto {
         this.cep = cep;
         this.complemento = complemento;
         this.numeroRua = numeroRua;
+        this.codUsuario = codUsuario;
     }
 
     public String getNomeFornecedor() {
@@ -83,6 +87,14 @@ public class FornecedorCreateDto {
 
     public void setNumeroRua(Integer numeroRua) {
         this.numeroRua = numeroRua;
+    }
+
+    public Integer getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Integer codUsuario) {
+        this.codUsuario = codUsuario;
     }
 
     @Override

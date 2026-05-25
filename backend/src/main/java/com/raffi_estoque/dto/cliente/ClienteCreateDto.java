@@ -1,5 +1,6 @@
 package com.raffi_estoque.dto.cliente;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
 public class ClienteCreateDto {
@@ -15,14 +16,25 @@ public class ClienteCreateDto {
 
     private Integer numeroRua;
 
+    @NotNull
+    private Integer codUsuario;
+
+    @Email
+    private String email;
+
+    private String telefone;
+
     public ClienteCreateDto() {
     }
 
-    public ClienteCreateDto(String nomeCliente, String cep, String complemento, Integer numeroRua) {
+    public ClienteCreateDto(String nomeCliente, String cep, String complemento, Integer numeroRua, Integer codUsuario, String email, String telefone) {
         this.nomeCliente = nomeCliente;
         this.cep = cep;
         this.complemento = complemento;
         this.numeroRua = numeroRua;
+        this.codUsuario = codUsuario;
+        this.email = email;
+        this.telefone = telefone;
     }
 
     public @NotBlank String getNomeCliente() {
@@ -33,7 +45,7 @@ public class ClienteCreateDto {
         this.nomeCliente = nomeCliente;
     }
 
-    public @NotBlank @Size(min = 8, max = 8) String getCep() {
+    public @Size(min = 8, max = 8) String getCep() {
         return cep;
     }
 
@@ -41,7 +53,7 @@ public class ClienteCreateDto {
         this.cep = cep;
     }
 
-    public @NotBlank @Size(min = 3, max = 50) String getComplemento() {
+    public @Size(min = 3, max = 50) String getComplemento() {
         return complemento;
     }
 
@@ -55,6 +67,30 @@ public class ClienteCreateDto {
 
     public void setNumeroRua(Integer numeroRua) {
         this.numeroRua = numeroRua;
+    }
+
+    public Integer getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Integer codUsuario) {
+        this.codUsuario = codUsuario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override

@@ -25,14 +25,19 @@ public class Venda {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH'h'mm dd/MM/yyyy")
     private LocalDateTime dataVenda;
 
+    @ManyToOne
+    @JoinColumn(name = "codUsuario", nullable = false)
+    private Usuario usuario;
+
     public Venda(){}
 
-    public Venda(Integer codVenda, Integer codCliente, List<ItemVenda> itens, Double valorTotal, LocalDateTime dataVenda) {
+    public Venda(Integer codVenda, Integer codCliente, List<ItemVenda> itens, Double valorTotal, LocalDateTime dataVenda, Usuario usuario) {
         this.codVenda = codVenda;
         this.codCliente = codCliente;
         this.itens = itens;
         this.valorTotal = valorTotal;
         this.dataVenda = dataVenda;
+        this.usuario = usuario;
     }
 
     public Integer getCodVenda() {
@@ -73,6 +78,14 @@ public class Venda {
 
     public void setDataVenda(LocalDateTime dataVenda) {
         this.dataVenda = dataVenda;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

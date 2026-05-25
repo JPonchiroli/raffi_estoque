@@ -1,10 +1,13 @@
 package com.raffi_estoque.mapper;
 
+import com.raffi_estoque.dto.cliente.ClienteCreateDto;
 import com.raffi_estoque.dto.fornecedor.FornecedorCreateDto;
 import com.raffi_estoque.dto.fornecedor.FornecedorResponseDto;
 import com.raffi_estoque.dto.fornecedor.FornecedorUpdateDto;
+import com.raffi_estoque.entities.Cliente;
 import com.raffi_estoque.entities.Fornecedor;
 
+import com.raffi_estoque.entities.Usuario;
 import org.springframework.stereotype.Component;
 
 import org.mapstruct.Mapper;
@@ -24,7 +27,20 @@ public interface FornecedorMapper {
     @Mapping(source = "complemento", target = "complemento")
     @Mapping(source = "numeroRua", target = "numeroRua")
     @Mapping(source = "cep", target = "cep")
+    @Mapping(target = "usuario", source = "codUsuario")
     Fornecedor toFornecedor(FornecedorCreateDto fornecedor);
+
+    default Usuario map(Integer codUsuario) {
+
+        if (codUsuario == null) {
+            return null;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsuarioId(codUsuario);
+
+        return usuario;
+    }
 
     List<FornecedorResponseDto> toListResponseDto(List<Fornecedor> fornecedor);
 
