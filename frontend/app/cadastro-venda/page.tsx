@@ -42,18 +42,10 @@ export default function CadastroVenda() {
       id?: string | number;
       label?: string;
     } | null;
-
-    dataVenda: string;
-
     itens: ItemVenda[];
   }>({
 
     cliente: null,
-
-    dataVenda: new Date()
-      .toISOString()
-      .split('T')[0],
-
     itens: [
       {
         produto: null,
@@ -154,12 +146,6 @@ export default function CadastroVenda() {
         setFormData({
 
           cliente,
-
-          dataVenda:
-            new Date()
-              .toISOString()
-              .split('T')[0],
-
           itens:
             itens.length > 0
               ? itens
@@ -320,9 +306,6 @@ export default function CadastroVenda() {
         codCliente:
           formData.cliente?.id,
 
-        dataVenda:
-          formData.dataVenda,
-
         itens: formData.itens.map(
           (item) => ({
 
@@ -427,7 +410,7 @@ export default function CadastroVenda() {
         className="bg-white rounded-lg shadow p-6"
       >
 
-        <div className="mb-6 pb-6 border-b">
+        <div className="mb-6 pb-6">
 
           <h2 className="text-xl font-bold mb-4 text-primary">
             Dados da Venda
@@ -453,14 +436,6 @@ export default function CadastroVenda() {
               />
 
             </div>
-
-            <FormInput
-              label="Data da Venda"
-              name="dataVenda"
-              type="date"
-              value={formData.dataVenda}
-              onChange={handleInputChange}
-            />
 
           </div>
 

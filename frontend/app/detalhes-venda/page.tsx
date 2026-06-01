@@ -128,7 +128,7 @@ export default function DetalhesVenda() {
           </div>
           <div>
             <p className="text-sm text-gray-600">Telefone</p>
-            <p className="text-lg font-semibold">{cliente.telefone}</p>
+            <p className="text-lg font-semibold">{cliente.telefone || "-"}</p>
           </div>
         </div>
       </div>

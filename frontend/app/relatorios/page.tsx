@@ -293,8 +293,8 @@ export default function Relatorios() {
             <table className="w-full">
               <thead className="bg-gray-100 border-b">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Mês/Ano</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Valor Faturado</th>
+                  <th className="w-1/2 px-4 py-3 text-left text-sm font-semibold text-gray-700">Mês/Ano</th>
+                  <th className="w-1/2 px-4 py-3 text-left text-sm font-semibold text-gray-700">Valor Faturado</th>
                 </tr>
               </thead>
               <tbody>
