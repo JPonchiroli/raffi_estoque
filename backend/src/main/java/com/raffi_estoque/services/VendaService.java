@@ -58,6 +58,10 @@ public class VendaService {
 
             int novaQuantidade = produto.getEstoqueAtual() - itemDto.getQuantidade();
 
+            if (novaQuantidade < 0) {
+                throw new EstoqueInsuficienteException("O estoque atual não pode ser menor 0 após uma venda");
+            }
+
             produto.setEstoqueAtual(novaQuantidade);
             produtoService.update(produto.getCodProduto(), produto);
 
