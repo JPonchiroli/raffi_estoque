@@ -2,7 +2,6 @@ package com.raffi_estoque.services;
 
 import com.raffi_estoque.entities.Fornecedor;
 import com.raffi_estoque.entities.Produto;
-import com.raffi_estoque.repositories.FornecedorRepository;
 import com.raffi_estoque.repositories.ProdutoRepository;
 import com.raffi_estoque.services.exception.*;
 
@@ -20,14 +19,13 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private FornecedorRepository fornecedorRepository;
+    private FornecedorService fornecedorService;
 
     @Transactional
     public Produto save(Produto produto){
         Integer codFornecedor = produto.getFornecedor().getCodFornecedor();
 
-        Fornecedor fornecedor = fornecedorRepository.findById(codFornecedor)
-                .orElseThrow(() -> new FornecedorNaoEncontradoException("Fornecedor com código " + codFornecedor + " não encontrado."));
+        Fornecedor fornecedor = fornecedorService.findById(codFornecedor);
 
         produto.setFornecedor(fornecedor);
 

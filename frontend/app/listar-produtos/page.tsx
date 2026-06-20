@@ -112,7 +112,33 @@ export default function ListarProdutos() {
       key: 'valorVenda' as const,
       label: 'Preço',
       render: (value: number | null) =>
-        value != null ? `R$ ${value.toFixed(2)}` : '-',
+
+        value != null
+          ? `R$ ${value.toFixed(2)}`
+          : '-',
+    },
+
+    {
+      key: 'estoqueAtual' as const,
+      label: 'Estoque',
+      render: (value: number | null, item: Produto) => {
+        const baixo = value !== null && item.estoqueMinimo !== null && value <= item.estoqueMinimo;
+        return (
+          <span className={baixo ? 'text-red-600 font-bold' : ''}>
+            {value ?? '-'}
+            {baixo && (
+              <span className="ml-2 text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                ⚠️ Estoque baixo
+              </span>
+            )}
+          </span>
+        );
+      },
+    },
+
+    {
+      key: 'unidadeMedida' as const,
+      label: 'Unidade',
     },
     { key: 'estoqueAtual' as const, label: 'Estoque' },
     { key: 'unidadeMedida' as const, label: 'Unidade' },

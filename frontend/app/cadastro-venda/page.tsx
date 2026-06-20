@@ -1,11 +1,10 @@
-import { Suspense } from "react";
-import CadastroVenda from "./CadastroVenda";
+import { Suspense } from 'react';
+import CadastroVendaForm from './CadastroVendaForm';
 
-
-export default function Page() {
+export default function CadastroVendaPage() {
   return (
     <Suspense fallback={<div>Carregando formulário...</div>}>
-      <CadastroVenda />
+      <CadastroVendaForm />
     </Suspense>
   );
 }

@@ -45,8 +45,8 @@ public class FornecedorService {
 
     @Transactional
     public Fornecedor findById(Integer id){
-        Optional<Fornecedor> event = fornecedorRepository.findById(id);
-        return event.orElseThrow(() -> new ObjectNotFoundException("Fornecedor Não Encontrado"));
+        Optional<Fornecedor> fornecedor = fornecedorRepository.findById(id);
+        return fornecedor.orElseThrow(() -> new ObjectNotFoundException("Fornecedor Não Encontrado"));
     }
 
     @Transactional

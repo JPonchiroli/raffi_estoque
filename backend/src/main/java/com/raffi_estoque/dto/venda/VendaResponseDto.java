@@ -10,7 +10,7 @@ public class VendaResponseDto {
     private Integer codVenda;
     private Integer codCliente;
     private Double valorTotal;
-    @JsonFormat(pattern = "HH'h'mm dd/MM/yyyy")
+    @JsonFormat(pattern = "HH'h'mm -  dd/MM/yyyy")
     private LocalDateTime dataVenda;
     private List<ItemVendaResponseDto> itens;
 
