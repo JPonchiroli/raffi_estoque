@@ -1,22 +1,25 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-import { useAuth } from '@/context/AuthContext';
 
-export default function LoginPage() {
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+
+export default function CriarUsuarioPage() {
+
 
   const router = useRouter();
 
-  const { login } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
+
   const [formData, setFormData] = useState({
-    usuarioNome: '',
-    usuarioSenha: '',
+    usuarioNome: "",
+    usuarioSenha: "",
   });
+
 
 
   const handleInputChange = (
@@ -25,11 +28,14 @@ export default function LoginPage() {
 
     const { name, value } = e.target;
 
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
   };
+
 
 
   const handleSubmit = async (
@@ -38,44 +44,46 @@ export default function LoginPage() {
 
     e.preventDefault();
 
+
     setLoading(true);
+
 
     try {
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/create`,
         {
-          method: 'POST',
+          method: "POST",
 
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
 
+
           body: JSON.stringify(formData),
+
         }
       );
 
 
+
       if (!response.ok) {
 
-        toast.error('Usuário ou senha inválidos');
+        toast.error(
+          "Erro ao criar usuário"
+        );
 
         return;
       }
 
 
-      const data = await response.json();
-
-
-      login(data.usuarioId);
-
 
       toast.success(
-        'Login realizado com sucesso!'
+        "Usuário criado com sucesso!"
       );
 
 
-      router.push('/');
+      router.push("/login");
 
 
     } catch (error) {
@@ -83,24 +91,32 @@ export default function LoginPage() {
       console.error(error);
 
       toast.error(
-        'Erro ao realizar login'
+        "Erro na conexão"
       );
+
 
     } finally {
 
       setLoading(false);
+
     }
+
   };
 
 
+
   return (
+
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+
 
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
 
+
         <h1 className="text-3xl font-bold text-center mb-8 text-primary">
-          Login
+          Criar conta
         </h1>
+
 
 
         <form
@@ -108,75 +124,104 @@ export default function LoginPage() {
           className="space-y-5"
         >
 
+
           <div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className="block mb-2 text-sm font-medium">
               Usuário
             </label>
 
+
             <input
+
               type="text"
+
               name="usuarioNome"
+
               value={formData.usuarioNome}
+
               onChange={handleInputChange}
-              placeholder="Digite seu usuário"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+
+              placeholder="Digite o usuário"
+
+              className="w-full px-4 py-3 border rounded-lg"
+
               required
+
             />
 
           </div>
+
 
 
           <div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+            <label className="block mb-2 text-sm font-medium">
               Senha
             </label>
 
+
             <input
+
               type="password"
+
               name="usuarioSenha"
+
               value={formData.usuarioSenha}
+
               onChange={handleInputChange}
-              placeholder="Digite sua senha"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+
+              placeholder="Digite a senha"
+
+              className="w-full px-4 py-3 border rounded-lg"
+
               required
+
             />
 
           </div>
 
 
+
           <button
+
             type="submit"
+
             disabled={loading}
+
             className="w-full py-3 bg-secondary text-white rounded-lg"
+
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+
+            {loading ? "Criando..." : "Criar conta"}
+
           </button>
 
 
-          <div className="text-center mt-4">
 
-            <p className="text-gray-600">
-              Não possui conta?
-            </p>
+          <button
 
+            type="button"
 
-            <button
-              type="button"
-              onClick={() => router.push('/criar-usuario')}
-              className="text-secondary font-semibold hover:underline"
-            >
-              Registre-se aqui
-            </button>
+            onClick={() => router.push("/login")}
 
-          </div>
+            className="w-full py-3 bg-gray-400 text-white rounded-lg"
+
+          >
+
+            Voltar
+
+          </button>
 
 
         </form>
 
+
       </div>
 
+
     </div>
+
   );
+
 }
