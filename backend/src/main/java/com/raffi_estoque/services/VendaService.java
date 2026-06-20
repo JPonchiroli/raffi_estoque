@@ -25,10 +25,7 @@ public class VendaService {
     private VendaRepository vendaRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private ClienteService clienteService;
 
     @Autowired
     private ItemVendaRepository itemVendaRepository;
@@ -42,8 +39,7 @@ public class VendaService {
 
         Usuario usuario = new Usuario(dto.getCodUsuario());
 
-        Cliente cliente = clienteRepository.findById(dto.getCodCliente())
-                .orElseThrow(() -> new ProdutoNaoEncontradoException("Cliente com código " + dto.getCodCliente() + " não encontrado"));
+        Cliente cliente = clienteService.findById(dto.getCodCliente());
 
         venda.setCodCliente(cliente.getCodCliente());
         venda.setDataVenda(LocalDateTime.now());
@@ -53,8 +49,7 @@ public class VendaService {
         List<ItemVenda> itens = new ArrayList<>();
 
         for (ItemVendaCreateDto itemDto : dto.getItens()) {
-            Produto produto = produtoRepository.findById(itemDto.getCodProduto())
-                    .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto com código " + itemDto.getCodProduto() + " não encontrado"));
+            Produto produto = produtoService.findById(itemDto.getCodProduto());
 
             int novaQuantidade = produto.getEstoqueAtual() - itemDto.getQuantidade();
 

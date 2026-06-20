@@ -22,7 +22,7 @@ public class UsuarioController {
     private UsuarioMapper usuarioMapper;
 
     @PostMapping("/create")
-    public ResponseEntity<UsuarioResponseDto> createVenda(@RequestBody UsuarioCreateDto dto) {
+    public ResponseEntity<UsuarioResponseDto> createUsuario(@RequestBody UsuarioCreateDto dto) {
 
         Usuario usuario = usuarioMapper.toUsuario(dto);
         usuarioService.save(usuario);
